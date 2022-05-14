@@ -1,19 +1,18 @@
+import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
-import './index.css';
-import {BrowserRouter as Router} from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
-const container = document.getElementById('root')!;
-const root = createRoot(container);
 
-root.render(
-  <Router>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-  </Router>
+ReactDOM.render(
+    <React.StrictMode>
+        <Router>
+                <App />
+        </Router>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
-
