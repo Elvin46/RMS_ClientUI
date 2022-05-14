@@ -1,31 +1,36 @@
+import { createBrowserHistory } from 'history';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {NavLink} from 'react-router-dom';
-import {Navbar,Container,NavbarBrand,ListGroup,ListGroupItem, Spinner} from 'reactstrap';
+import {Spinner} from 'reactstrap';
 import { useAsyncData } from '../hooks/useAsyncData';
-import { DataList, IHall } from '../models';
+import { IHallList, IHall } from '../models';
 
 export const Header : React.FC =()=>{
-    const [hallsData, getHalls] = useAsyncData<DataList<IHall>>("https://localhost:44355/api/halls");
-    console.log(hallsData.data?.halls);
-    React.useEffect(()=>{
-        getHalls();
-    },[getHalls]);
+    const [hallsData, getHalls] = useAsyncData<IHallList<IHall>>("/halls");
+    const history = createBrowserHistory();
+
+    const handleViewTables = React.useCallback((id:string)=>{
+        history.push(`/halls/${id}`);
+    },[history]);
+    let content;
+    if(hallsData.loading) {
+        content = <Spinner/>;
+    }
+    else if(hallsData.error) {
+        content = <h4 className='text-danger'>Error Occured</h4>
+    }
+    else {
+        content = (
+            <ul className='navbar-nav d-flex flex-row h-100'>
+                {hallsData.data?.halls.map(({id,name})=>(
+                    <li className='nav-item ' key={name}><button onClick={()=> handleViewTables(id)} className='btn btn-link p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited rounded-0'>{name}</button></li>
+                ))}
+            </ul>
+        )
+    }
+
     return (
         <nav className="navbar ">
-                {hallsData.loading && (
-                    <Spinner/>
-                )}
-                {hallsData.error && !hallsData.loading && (
-                    <h4 className='text-danger'>Error Occured</h4>
-                )}
-                {!!hallsData.data && !hallsData.loading && (
-                        <ul className='navbar-nav d-flex flex-row h-100'>
-                            {hallsData.data.halls.map(({name})=>(
-                                <li className='nav-item ' key={name}><Link to={name} className='p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited'>{name}</Link></li>
-                            ))}
-                        </ul>
-                )}
+            {content}
             <ul className='navbar-nav d-flex flex-row h-100'>
                 <li className='nav-item '><a className='p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited'>Receipts</a></li>
                 <li className='nav-item h-100 '><a className='p-3 text-white text-decoration-none h-100 d-flex align-items-center'>Admin</a></li>

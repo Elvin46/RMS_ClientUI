@@ -5,11 +5,23 @@ export interface IAsyncData<T>{
 }
 
 export interface IHall{
+    id: string;
     name: string;
 }
 
-export interface DataList<T>{
+export interface IHallList<T>{
     halls: T[];
+    count: number;
+    getData: void;
+}
+
+export interface ITable{
+    id: string;
+    number: number;
+    status: string;
+}
+export interface ITableList<T>{
+    tables: T[];
     count: number;
     getData: void;
 }

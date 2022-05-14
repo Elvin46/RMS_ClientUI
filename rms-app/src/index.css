@@ -11,7 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+#root{
+  background: url(https://demo.clopos.com/pos/img/bitmap.png);
+  height: 100vh;
+}
 .navbar{
   background-color: #3E396B;
   padding-top: 0px !important;
@@ -34,4 +37,7 @@ code {
     margin: auto 0;
     position: absolute;
     right: 0px;
+}
+.nav-item .btn:focus{
+  box-shadow: none;
 }
