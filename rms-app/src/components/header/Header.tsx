@@ -2,8 +2,9 @@ import { createBrowserHistory } from 'history';
 import {Link} from 'react-router-dom'
 import React from 'react';
 import {Spinner} from 'reactstrap';
-import { useAsyncData } from '../hooks/useAsyncData';
-import { IHallList, IHall } from '../models';
+import { useAsyncData } from '../../hooks/useAsyncData';
+import { IHallList, IHall } from '../../models';
+import "./Header.scss";
 
 export const Header : React.FC =()=>{
     const [hallsData, getHalls] = useAsyncData<IHallList<IHall>>("/halls");

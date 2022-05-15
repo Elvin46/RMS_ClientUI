@@ -9,6 +9,9 @@ export const APP_ROUTES = {
         DETAILS: {
             PATH: '/halls/:id'
         }
+    },
+    ORDER:{
+        PATH: "/order"
     }
 }
 

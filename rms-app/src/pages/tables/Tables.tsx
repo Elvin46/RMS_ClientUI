@@ -75,6 +75,7 @@ export const Tables : React.FC = ()=>{
                 isOpen={isRestrictedModalOpen}
                 toggle={toogleRestrictedModal}
                 tableNumber={tableNumber}
+                tableId={tableId}
                 />
             </Row>
         )

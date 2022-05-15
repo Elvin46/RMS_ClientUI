@@ -1,12 +1,10 @@
-import React from 'react';
-import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from 'react-router-dom';
 import { APP_ROUTES } from './consts';
-import { Home } from './pages/Home';
+import { Order } from './pages/order/Order';
 import { Tables } from './pages/tables/Tables';
 
 
@@ -19,6 +17,8 @@ function App() {
         <Route path={APP_ROUTES.HALLS.PATH} element={<Tables/>}>
         </Route>
         <Route path={APP_ROUTES.HALLS.DETAILS.PATH} element={<Tables/>}>
+        </Route>
+        <Route path={APP_ROUTES.ORDER.PATH} element={<Order/>}>
         </Route>
       </Routes>
     </>

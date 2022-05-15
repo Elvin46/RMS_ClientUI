@@ -13,31 +13,8 @@ code {
 }
 #root{
   background: url(https://demo.clopos.com/pos/img/bitmap.png);
-  height: 100vh;
+  height: 100%;
 }
-.navbar{
-  background-color: #3E396B;
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  height: 50px !important;
-}
-.nav-item a{
-  transition: 400ms;
-  position: relative;
-}
-.nav-item :hover{
-  background-color: #7470a1;
-  cursor: pointer;
-}
-.nav-item .spilited::after{
-    content: "";
-    width: 2px;
-    height: 25px;
-    background-color: #7470a1;
-    margin: auto 0;
-    position: absolute;
-    right: 0px;
-}
-.nav-item .btn:focus{
-  box-shadow: none;
+body{
+  height: 97vh;
 }

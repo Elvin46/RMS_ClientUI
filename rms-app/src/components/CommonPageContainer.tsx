@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from 'reactstrap';
-import { Header } from './Header';
+import { Header } from './header/Header';
 
 type Props = {
     children?: React.ReactNode,
