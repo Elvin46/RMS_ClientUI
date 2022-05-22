@@ -6,7 +6,7 @@ interface IRestrictedTableModalProps{
     isOpen:boolean,
     toggle:()=>void,
     tableNumber:number,
-    tableId:string
+    tableId:number
 }
 export const RestrictedTableModal : React.FC<IRestrictedTableModalProps> = ({isOpen,toggle,tableNumber,tableId}) =>{
 

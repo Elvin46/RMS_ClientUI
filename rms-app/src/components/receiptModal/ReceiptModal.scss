@@ -1,0 +1,21 @@
+.receipt-body{
+    .order-foods-list{
+        .order-food-item{
+            display: flex;
+            justify-content: space-between;
+            height: 45px;
+            align-items: center;
+            background-image: linear-gradient(to right, #dadada 33%, rgba(255, 255, 255, 0) 0%);
+            background-position: bottom;
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+            span{
+                font-size: 14px;
+                padding: 12px;
+            }
+            .text-right{
+                padding: 12px 30px 12px 0;
+            }
+        }
+    }
+}

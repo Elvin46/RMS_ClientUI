@@ -1,23 +1,51 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { ITable,IOrder } from "../../models";
+import { APP_ROUTES, TABLE_STATUSES } from "../../consts";
+import { createBrowserHistory } from "history";
 
 interface IOpenTableModalProps{
     isOpen:boolean,
     toggle:()=>void,
-    tableNumber:number,
-    tableId:string
+    table:ITable
 }
-export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,tableNumber,tableId}) =>{
- 
+interface IPostOrderData{
+    tableId:number,
+    staffId:number
+}
+export const INITIAL_FORM_DATA:IPostOrderData = {
+    tableId:0,
+    staffId:0
+}
+export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,table}) =>{
+    let navigate = useNavigate();
+    const history = createBrowserHistory();
+    const handleCreateOrder=React.useCallback(()=>{
+        console.log(table);
+        
+        if (table.status !== TABLE_STATUSES.FULL) {
+            axios.post("https://localhost:44355/api/orders", {tableId:table.id,staffId:2})
+                .then(() => {
+                    let path = APP_ROUTES.ORDER.PATH; 
+                    navigate(`${path}?tableId=${table.id}`);
+                })
+        }
+        else{
+            let path = APP_ROUTES.ORDER.PATH; 
+            navigate(path);
+        }
+        
+    },[table])
     return (
         <Modal isOpen={isOpen} centered>
             <ModalHeader>
-                Table-{tableNumber}
+                Table-{table.number}
             </ModalHeader>
             <ModalBody className="d-flex justify-content-center">
-                <Link to={`/order?tableId=${tableId}`}  className="mx-2 btn btn-success">Order</Link>
-                <Link to={`/tables/${tableId}`} className="mx-2 btn btn-success">Reservation</Link>
+                <button  onClick={()=>handleCreateOrder()} className="mx-2 btn btn-success">Order</button>
+                <Link to={`/tables/${table.id}`} className="mx-2 btn btn-success">Reservation</Link>
             </ModalBody>
             <ModalFooter>
                 <Button onClick={toggle} className="mx-2 btn btn-danger">Cancel</Button>

@@ -8,42 +8,29 @@ import { useAsyncData } from "../../hooks/useAsyncData";
 import { ITable, ITableList } from "../../models";
 import {TABLE_STATUSES} from "../../consts"
 import './Tables.scss';
-import { RestrictedTableModal } from "../../components/restrictedTableModal/RestrictedTableModal";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 
 export const Tables : React.FC = ()=>{
     const {id} = useParams<{id:string}>();
-    const [dataId,setDataId] = React.useState('');
     
     const [tablesData,getTables] = useAsyncData<ITableList<ITable>>('/tables', {hallId : id});
     const [isModalOpen,setModalOpen]=React.useState(false);
-    const [isRestrictedModalOpen,setRestrictedModelOpen] = React.useState(false);
-    const [tableNumber,setTableNumber]=React.useState(1);
-    const [tableId,setTableId]=React.useState("");
+    const [table,setTable]=React.useState<ITable>({id:0,number:0,status:TABLE_STATUSES.EMPTY,hallId:"0"});
     
     React.useEffect(()=>{
         getTables({hallId : id});
     },[id,getTables]);
 
-    const history = createBrowserHistory();
-
-    const handleClickModal=React.useCallback((number:number,status:string,id:string)=>{
-        if (status===TABLE_STATUSES.FULL) {
-            setModalOpen(false);
-            setTableNumber(number);
-            setRestrictedModelOpen(true);
-        }
-        else{
+    const handleClickModal=React.useCallback((table:ITable)=>{
+        
             setModalOpen(true);
-            setTableNumber(number);
-            setTableId(id);
-        }
+            setTable(table);
+        
     },[])
     const toogleModal=React.useCallback(()=>{
         setModalOpen((isModalOpen)=>!isModalOpen)
-    },[])
-    const toogleRestrictedModal=React.useCallback(()=>{
-        setRestrictedModelOpen((isRestrictedOpen)=>!isRestrictedOpen)
     },[])
      
     let content;
@@ -57,25 +44,18 @@ export const Tables : React.FC = ()=>{
     else {
         content = (
             <Row className="tables">
-                {tablesData.data?.tables.map(({id,number,status})=>(
+                {tablesData.data?.tables.map((table)=>(
                     <Col xs={3} key={id}>
-                        <button onClick={()=>handleClickModal(number,status,id)} className={`table-item ${status}`}>
-                            <h5>{number}</h5>
-                            <h5>{status}</h5>
+                        <button onClick={()=>handleClickModal(table)} className={`table-item ${table.status}`}>
+                            <h5>{table.number}</h5>
+                            <h5>{table.status}</h5>
                         </button>
                     </Col>
                 ))}   
                 <OpenTableModal 
                 isOpen={isModalOpen}
                 toggle={toogleModal}
-                tableNumber={tableNumber}
-                tableId={tableId}
-                />
-                <RestrictedTableModal 
-                isOpen={isRestrictedModalOpen}
-                toggle={toogleRestrictedModal}
-                tableNumber={tableNumber}
-                tableId={tableId}
+                table={table}
                 />
             </Row>
         )

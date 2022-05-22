@@ -16,9 +16,10 @@ export interface IHallList<T>{
 }
 
 export interface ITable{
-    id: string;
+    id: number;
     number: number;
     status: string;
+    hallId:string;
 }
 export interface ITableList<T>{
     tables: T[];
@@ -26,10 +27,11 @@ export interface ITableList<T>{
     getData: void;
 }
 export interface IFood{
-    id:string
+    id:number,
     name:string,
     price:number,
-    file:string
+    file:string,
+    count:number
 }
 export interface ICategory{
     id:string
@@ -40,4 +42,15 @@ export interface ICategoryList{
     categories: ICategory[];
     count: number;
     getData: void;
+}
+export interface IOrder{
+    id:number | undefined,
+    foods:IFood[],
+    totalPrice:number | undefined,
+    staffName:string
+}
+export interface IReceipt{
+    id:number | undefined,
+    barcode:number | undefined
+    order:IOrder | undefined
 }

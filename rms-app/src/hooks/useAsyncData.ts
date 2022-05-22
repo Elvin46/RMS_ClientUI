@@ -24,3 +24,7 @@ export function useAsyncData<T>(path: string, defaultParams?: any): [IAsyncData<
 
     return [data, getData];
 }
+export function usePostData(path: string, object:object){
+
+        axios.post(`${BASE_URL}${path}`, object);
+}

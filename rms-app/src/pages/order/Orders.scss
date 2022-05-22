@@ -1,73 +1,160 @@
-.left-menu{
-    padding: 10px;
-    .menu-header{
-        ul{
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            li{
-                list-style: none;
-                .category-name{
-                    transform: skewX(-16deg);
-                    background: #ffffff;
-                    box-shadow: 0 0 4px rgb(0 0 0 / 10%);
-                    border-radius: 3px;
-                    margin: 0;
-                    padding: 0 10px;
-                    font-weight: 500;
-                    margin-right: 8px;
-                    display: inline-block;
-                    padding: 5px 10px;
-                    span{
-                        color: #7670a7;
-                        display: flex;
-                        font-size: 16px;
-                        padding: 3px 15px 3px 10px;
-                        text-decoration: none;
-                        transform: skewX(16deg);
-                    }
-                }
-            }
-        }
-        
-        
+.order-page{
+    height: 100%;
+    background-color: #f1f1f1;
+    .row{
+        width: 100%;
     }
-    
-    .menu-list{
-        margin-top: 20px;
-        display: grid;
-        padding: 0 10px 10px;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
-        grid-gap: 6px;
-        .menu-item{
-            padding: 6px !important;
-            background: url("https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900");
-            background-size: cover;
-            .food-item{
-                width: 100%;
-                height: 100px;
-                padding: 0;
-                background: transparent;
+    .left-menu{
+        position: relative;
+        background-color: #f8fafb;
+        box-shadow: 0px 0px 18px 0px rgba(0,0,0,0.59);
+        height: 100%;
+        .order-header{
+            background-color: #5c578d;
+            
+            height: 50px;
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            h5{
                 color: white;
-                font-size: 24px;
-                font-weight: 600;
-                border: none;
-                img{
+                font-weight: 500;
+                margin: 0;  
+            }
+            .back-to-tables{
+                background-color: #3E396B;
+                width: 50px;
+                height: 100%;
+                a{
                     width: 100%;
                     height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
-            .category-item{
-                width: 100%;
-                height: 100px;
-                border: none;
-                padding: 0;
-                background: transparent;
-                color: white;
-                font-weight: 600;
-                font-size: 24px;
+            .table-number{
+                width: calc(100% - 50px);
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
-    }
+        .order{
+            display: flex;
+            height: 100%;
+            .order-sidebar{
+                background-color: #5c578d;
+                width: 50px;
+                height: 100%;
+                .item{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    width: 100%;
+                    color: #9d9ace;
+                    background: transparent;
+                    border: none;
+                    font-size: 24px;
+                    span{
+                        padding: 8px 0;
+                    }
+                    &::after{
+                        content: "";
+                        height: 1px;
+                        display: block;
+                        width: calc(100% - 13px);
+                        background-position: top;
+                        background-size: 10px 1px;
+                        background-repeat: repeat-x;
+                        margin: 0 auto;
+                        background-color: #7470a1;
+
+                    }
+                    &:active{
+                        background-color: #3d396b;
+                    }
+                }
+                .active-item{
+                    color: white !important;
+                }
+                .deactive-item{ 
+                    color: #9d9ace !important;
+                }
+            }
+            .order-body{
+                height: calc(100% - 150px);
+                .order-foods-list{
+                    .order-food-item{
+                        display: flex;
+                        justify-content: space-between;
+                        height: 45px;
+                        align-items: center;
+                        background-image: linear-gradient(to right, #dadada 33%, rgba(255, 255, 255, 0) 0%);
+                        background-position: bottom;
+                        background-size: 8px 1px;
+                        background-repeat: repeat-x;
+                        span{
+                            font-size: 14px;
+                            padding: 12px;
+                        }
+                        .text-right{
+                            padding: 12px 30px 12px 0;
+                        }
+                    }
+                }
+                
+            }
+            .order-footer{
+                height: 150px;
+                &::before{
+                    content: "";
+                    height: 1px;
+                    display: block;
+                    width: calc(100% - 2rem);
+                    background-image: linear-gradient(to right, #dadada 50%, rgba(255, 255, 255, 0) 0%);
+                    background-position: top;
+                    background-size: 10px 1px;
+                    background-repeat: repeat-x;
+                    margin: 0 auto;
+                }
+                .create-receipt-btn{
+                    height: 44px;
+                    background: #31cc71 !important;
+                    box-shadow: 0 7px 11px -4px rgb(49 204 113 / 63%);
+                    border-radius: 3px;
+                    border: transparent !important;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0;
+                    &:hover{
+                        box-shadow: unset !important;
+                        background: #2cb766 !important;
+                    }
+                }
+                .icon-check-box{
+                    color: white;
+                    width: 48px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .label{
+                    color: white;
+                    padding: 0 13px 0 0;
+                    font-size: 19px;
+                    font-weight: bold;
+                    flex: 1;
+                }
+                
+            }
+        }
+        }
 }
