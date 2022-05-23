@@ -8,8 +8,8 @@ import { useAsyncData } from "../../hooks/useAsyncData";
 import { ITable, ITableList } from "../../models";
 import {TABLE_STATUSES} from "../../consts"
 import './Tables.scss';
-import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import {ReservationModal} from "../../components/reservationModal/ReservationModal"
 
 
 export const Tables : React.FC = ()=>{
@@ -18,19 +18,20 @@ export const Tables : React.FC = ()=>{
     const [tablesData,getTables] = useAsyncData<ITableList<ITable>>('/tables', {hallId : id});
     const [isModalOpen,setModalOpen]=React.useState(false);
     const [table,setTable]=React.useState<ITable>({id:0,number:0,status:TABLE_STATUSES.EMPTY,hallId:"0"});
-    
+    const [isReservationModalOpen,setReservationModalOpen]=React.useState(false);
     React.useEffect(()=>{
         getTables({hallId : id});
-    },[id,getTables]);
+    },[id,getTables,table.status]);
 
     const handleClickModal=React.useCallback((table:ITable)=>{
-        
-            setModalOpen(true);
             setTable(table);
-        
+            setModalOpen(true);
     },[])
     const toogleModal=React.useCallback(()=>{
         setModalOpen((isModalOpen)=>!isModalOpen)
+    },[])
+    const tooglerReservationModal=React.useCallback(()=>{
+        setReservationModalOpen((isReservationModalOpen)=>!isReservationModalOpen)
     },[])
      
     let content;
@@ -55,6 +56,12 @@ export const Tables : React.FC = ()=>{
                 <OpenTableModal 
                 isOpen={isModalOpen}
                 toggle={toogleModal}
+                table={table}
+                setReservationModalOpen={setReservationModalOpen}
+                />
+                <ReservationModal
+                isOpen={isReservationModalOpen}
+                toggle={tooglerReservationModal}
                 table={table}
                 />
             </Row>

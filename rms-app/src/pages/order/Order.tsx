@@ -16,24 +16,25 @@ import { TABLE_STATUSES } from "../../consts";
 export const Order : React.FC = () =>{
     const [searchParams,setSearchParams] = useSearchParams();
     const tableId = searchParams.get("tableId");
+    console.log(tableId);
+
     const [tableData,getTableData] = useAsyncData<ITable>(`/tables/${tableId}`);
     const [orderData,getOrderData] = useAsyncData<IOrder>(`/orders/${tableId}`);
+    const [receiptData,getReceiptData] = useAsyncData<IReceipt>(`/receipts/${orderData.data?.id}`);
     const [active,setActive] = React.useState(true);
     const [serviceFee,setServiceFee] = React.useState(1.05);
     const [isReceiptModalOpen,setReceiptModalOpen] = React.useState(false);
     const [receipt,setReceipt] = React.useState<IReceipt>({id:0,
         barcode:0,
         order:orderData.data});
-    const [receiptData,getReceiptData] = useAsyncData<IReceipt>(`/receipts/${orderData.data?.id}`);
     let menuContent;
     React.useEffect(()=>{
         getTableData();
         getReceiptData()
         getOrderData();
-    },[]);
+    },[tableId]);
     if(!!orderData.data) {
         menuContent = <Menu orderId={orderData.data?.id} getOrderData={getOrderData}/>
-        
     }
     
     const handleServiceFee = React.useCallback(()=>{
