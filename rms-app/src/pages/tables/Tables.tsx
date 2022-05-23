@@ -1,5 +1,6 @@
 import { createBrowserHistory } from "history";
 import React from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Col, Row, Spinner } from "reactstrap";
 import { CommonPageContainer } from "../../components/CommonPageContainer";
@@ -10,6 +11,7 @@ import {TABLE_STATUSES} from "../../consts"
 import './Tables.scss';
 import 'react-toastify/dist/ReactToastify.css'
 import {ReservationModal} from "../../components/reservationModal/ReservationModal"
+import { ClientNameModalOpen } from "../../components/clientNameModal/ClientNameModal";
 
 
 export const Tables : React.FC = ()=>{
@@ -19,6 +21,7 @@ export const Tables : React.FC = ()=>{
     const [isModalOpen,setModalOpen]=React.useState(false);
     const [table,setTable]=React.useState<ITable>({id:0,number:0,status:TABLE_STATUSES.EMPTY,hallId:"0"});
     const [isReservationModalOpen,setReservationModalOpen]=React.useState(false);
+    const [isClientNameModalOpen,setClientNameModalOpen] = React.useState(false);
     React.useEffect(()=>{
         getTables({hallId : id});
     },[id,getTables,table.status]);
@@ -30,8 +33,20 @@ export const Tables : React.FC = ()=>{
     const toogleModal=React.useCallback(()=>{
         setModalOpen((isModalOpen)=>!isModalOpen)
     },[])
-    const tooglerReservationModal=React.useCallback(()=>{
+    const toogleReservationModal=React.useCallback(()=>{
         setReservationModalOpen((isReservationModalOpen)=>!isReservationModalOpen)
+    },[])
+    const toogleClientNameModal=React.useCallback(()=>{
+        setClientNameModalOpen((isClientNameModalOpen)=>!isClientNameModalOpen)
+    },[])
+    const ChangeTableStatusToReserved = React.useCallback((tableId:number,data:number)=>{
+        setTimeout(()=>{
+            axios.put(`https://localhost:44355/api/tables/${tableId}`,{tableStatus:TABLE_STATUSES.RESERVED})
+            .then(()=>{
+                getTables({hallId : id})
+            })
+        },data);
+        console.log("salam");
     },[])
      
     let content;
@@ -58,10 +73,17 @@ export const Tables : React.FC = ()=>{
                 toggle={toogleModal}
                 table={table}
                 setReservationModalOpen={setReservationModalOpen}
+                setClientNameModalOpen={setClientNameModalOpen}
                 />
                 <ReservationModal
                 isOpen={isReservationModalOpen}
-                toggle={tooglerReservationModal}
+                toggle={toogleReservationModal}
+                table={table}
+                ChangeTableStatusToReserved={ChangeTableStatusToReserved}
+                />
+                <ClientNameModalOpen
+                isOpen={isClientNameModalOpen}
+                toggle={toogleClientNameModal}
                 table={table}
                 />
             </Row>

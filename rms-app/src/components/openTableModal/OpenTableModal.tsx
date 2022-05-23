@@ -11,6 +11,7 @@ interface IOpenTableModalProps{
     toggle:()=>void,
     table:ITable,
     setReservationModalOpen:Dispatch<SetStateAction<boolean>>
+    setClientNameModalOpen:Dispatch<SetStateAction<boolean>>
 }
 interface IPostOrderData{
     tableId:number,
@@ -20,18 +21,24 @@ export const INITIAL_FORM_DATA:IPostOrderData = {
     tableId:0,
     staffId:0
 }
-export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,table,setReservationModalOpen}) =>{
+export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,table,setReservationModalOpen,setClientNameModalOpen}) =>{
     let navigate = useNavigate();
     const history = createBrowserHistory();
     const handleCreateOrder=React.useCallback(()=>{
         console.log(table);
         
         if (table.status !== TABLE_STATUSES.FULL) {
-            axios.post("https://localhost:44355/api/orders", {tableId:table.id,staffId:2})
+            if (table.status === TABLE_STATUSES.RESERVED) {
+                toggle();
+                setClientNameModalOpen(true);
+            }
+            else{
+                axios.post("https://localhost:44355/api/orders", {tableId:table.id,staffId:2})
                 .then(() => {
                     let path = APP_ROUTES.ORDER.PATH; 
                     navigate(`${path}?tableId=${table.id}`);
                 })
+            }
         }
         else{
             let path = APP_ROUTES.ORDER.PATH; 
