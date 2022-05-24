@@ -61,8 +61,8 @@ export const Menu: React.FC<IMenuProps> = ({orderId,getOrderData}) => {
         setFoodsOpen(false);
     },[])
     const addToOrder = React.useCallback((id:number)=>{
-        axios.put(`https://localhost:44355/api/orders/${orderId}`, {foodId:id})
         getOrderData();
+        axios.put(`https://localhost:44355/api/orders/${orderId}`, {foodId:id})
     },[])
 
     return (

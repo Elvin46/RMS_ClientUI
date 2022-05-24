@@ -18,10 +18,6 @@ export function useAsyncData<T>(path: string, defaultParams?: any): [IAsyncData<
         }
     }, [path]);
 
-    React.useEffect(() => {
-        getData();
-    }, [getData]);
-
     return [data, getData];
 }
 export function usePostData(path: string, object:object){

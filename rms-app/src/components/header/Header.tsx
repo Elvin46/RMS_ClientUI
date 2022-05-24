@@ -3,14 +3,20 @@ import {Link} from 'react-router-dom'
 import React from 'react';
 import {Spinner} from 'reactstrap';
 import { useAsyncData } from '../../hooks/useAsyncData';
-import { IHallList, IHall } from '../../models';
+import { IHallList, IHall, IStaff, IAsyncData } from '../../models';
 import "./Header.scss";
+import { INITIAL_STAFF } from '../../pages/tables/Tables';
 
 export const Header : React.FC =()=>{
     const [hallsData, getHalls] = useAsyncData<IHallList<IHall>>("/halls");
     const history = createBrowserHistory();
-
+    const staffJsonStr = localStorage.getItem("staff");
+    let staff:IStaff = INITIAL_STAFF;
+    if (!!staffJsonStr) {
+        staff = JSON.parse(staffJsonStr);
+    }
     React.useEffect(()=>{
+        console.log(staff);
         getHalls();
     },[getHalls]);
 
@@ -39,7 +45,7 @@ export const Header : React.FC =()=>{
             {content}
             <ul className='navbar-nav d-flex flex-row h-100'>
                 <li className='nav-item '><a className='p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited'>Receipts</a></li>
-                <li className='nav-item h-100 '><Link to="/a" className='p-3 text-white text-decoration-none h-100 d-flex align-items-center'>Admin</Link></li>
+                <li className='nav-item h-100 '><Link to="/a" className='p-3 text-white text-decoration-none h-100 d-flex align-items-center'>{staff.fullName}-{staff.staffType}</Link></li>
             </ul>
         </nav>
     )

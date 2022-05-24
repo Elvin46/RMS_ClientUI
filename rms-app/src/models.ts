@@ -54,3 +54,11 @@ export interface IReceipt{
     barcode:number | undefined
     order:IOrder | undefined
 }
+
+export interface IStaff{
+    id: number | undefined,
+    fullName:string,
+    staffType:string,
+    phoneNumber:string,
+    salary:number
+}

@@ -2,9 +2,10 @@ import React, { Dispatch, SetStateAction } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { ITable,IOrder } from "../../models";
+import { ITable,IOrder, IStaff } from "../../models";
 import { APP_ROUTES, TABLE_STATUSES } from "../../consts";
 import { createBrowserHistory } from "history";
+import { INITIAL_STAFF } from "../../pages/tables/Tables";
 
 interface IOpenTableModalProps{
     isOpen:boolean,
@@ -23,6 +24,11 @@ export const INITIAL_FORM_DATA:IPostOrderData = {
 }
 export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,table,setReservationModalOpen,setClientNameModalOpen}) =>{
     let navigate = useNavigate();
+    const staffJsonStr = localStorage.getItem("staff");
+    let staff:IStaff = INITIAL_STAFF;
+    if (!!staffJsonStr) {
+        staff = JSON.parse(staffJsonStr);
+    }
     const history = createBrowserHistory();
     const handleCreateOrder=React.useCallback(()=>{
         console.log(table);
@@ -33,7 +39,7 @@ export const OpenTableModal : React.FC<IOpenTableModalProps> = ({isOpen,toggle,t
                 setClientNameModalOpen(true);
             }
             else{
-                axios.post("https://localhost:44355/api/orders", {tableId:table.id,staffId:2})
+                axios.post("https://localhost:44355/api/orders", {tableId:table.id,staffId:staff.id})
                 .then(() => {
                     let path = APP_ROUTES.ORDER.PATH; 
                     navigate(`${path}?tableId=${table.id}`);

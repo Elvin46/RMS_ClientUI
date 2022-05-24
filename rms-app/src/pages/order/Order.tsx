@@ -11,6 +11,7 @@ import { ReceiptModal} from "../../components/receiptModal/ReceiptModal";
 
 import './Orders.scss';
 import { TABLE_STATUSES } from "../../consts";
+import { INITIAL_STAFF } from "../tables/Tables";
 
 
 export const Order : React.FC = () =>{
