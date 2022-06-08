@@ -1,8 +1,10 @@
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  useNavigate
 } from 'react-router-dom';
+import Auth from './Auth';
 import { APP_ROUTES } from './consts';
 import { Order } from './pages/order/Order';
 import { Home } from './pages/Pin/Home';
@@ -11,6 +13,11 @@ import { ProtectedRoutes } from './ProtectedRoutes';
 
 
 function App() {
+  const navigate = useNavigate();
+  window.onload = function(){
+    Auth.logout();
+    navigate(APP_ROUTES.HOME.PATH);
+  };
   return (
     <>
       <Routes>

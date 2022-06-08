@@ -39,10 +39,9 @@ export const Home : React.FC =()=>{
         if(pin>=1000&&pin<=9999){
             let path = APP_ROUTES.HALLS.PATH;
             axios.get(`https://localhost:44355/api/staffs/${pin}`).then(({data})=>{
-                Auth.login(()=>{
-                    localStorage.setItem("staff",JSON.stringify(data));
-                    navigate(path);
-                })
+                Auth.login();
+                localStorage.setItem("staff",JSON.stringify(data));
+                navigate(path);
                 
             })
             setPin(0)

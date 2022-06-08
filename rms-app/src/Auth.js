@@ -3,13 +3,11 @@ class Auth{
         this.authenticated = false;
     }
 
-    login(cb){
+    login(){
         this.authenticated = true;
-        cb();
     }
-    logout(cb){
+    logout(){
         this.authenticated = false;
-        cb();
     }
     isAuthenticated(){
         return this.authenticated;
