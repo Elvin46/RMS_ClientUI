@@ -31,7 +31,7 @@ export const Order : React.FC = () =>{
     let menuContent;
     React.useEffect(()=>{
         getTableData();
-        getReceiptData()
+        getReceiptData();
         getOrderData();
     },[tableId]);
     if(!!orderData.data) {
@@ -49,19 +49,23 @@ export const Order : React.FC = () =>{
     },[active])
 
     const handleCreateReceipt = React.useCallback(async()=>{
-        
-        if (!!receiptData.error) {
+        await axios.get(`https://localhost:44355/api/receipts/${orderData.data?.id}`).then(({data})=>{
+            setReceipt(data);
+            setReceiptModalOpen(true);
+        }).catch(()=>{
             if (!!orderData.data?.totalPrice) {
-                await axios.post(`https://localhost:44355/api/receipts`, {orderId:orderData.data?.id, totalPrice: orderData.data?.totalPrice * serviceFee})
+                axios.post(`https://localhost:44355/api/receipts`, {orderId:orderData.data?.id, totalPrice: orderData.data?.totalPrice * serviceFee})
                 .then(({data})=>{
                     setReceipt(data);
                     setReceiptModalOpen(true);
                 })
             }
+        })
+        if (!!receiptData.error) {
+            
         }
         else if(!!receiptData.data){
-            await setReceipt(receiptData.data);
-            setReceiptModalOpen(true);
+            
         }
     },[orderData,serviceFee,receiptData])
 

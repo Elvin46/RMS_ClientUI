@@ -44,7 +44,7 @@ export const Header : React.FC =()=>{
         <nav className="navbar ">
             {content}
             <ul className='navbar-nav d-flex flex-row h-100'>
-                <li className='nav-item '><a className='p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited'>Receipts</a></li>
+                {staff.staffType === "Admin" ? <li className='nav-item '><a href='https://localhost:44374/' className='p-3 text-white text-decoration-none h-100 d-flex align-items-center spilited'>Admin Panel</a></li>: null}
                 <li className='nav-item h-100 '><Link to="/a" className='p-3 text-white text-decoration-none h-100 d-flex align-items-center'>{staff.fullName}-{staff.staffType}</Link></li>
             </ul>
         </nav>

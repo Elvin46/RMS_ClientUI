@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { Spinner,Col } from "reactstrap";
 import { useAsyncData } from "../../hooks/useAsyncData";
-import {ICategoryList,IFood } from "../../models";
+import {ICategoryList,IFood, IFoodList } from "../../models";
 import './Menu.scss';
 
 
@@ -13,9 +13,12 @@ interface IMenuProps{
 export const Menu: React.FC<IMenuProps> = ({orderId,getOrderData}) => {
 
     const [categoriesData,getCategoriesData] = useAsyncData<ICategoryList>("/categories");
+    const [foodsData,getFoodsData] = useAsyncData<IFoodList>(`/foods`);
     const [isFoodsOpen,setFoodsOpen] = React.useState(false);
+    const [selectedCategoryId,setselectedCategoryId] = React.useState(0);
+    var categoryId:number;
     const [selectedCategory,setselectedCategory] = React.useState<string>();
-    const [foodsData,setFoodsData] = React.useState<IFood[]>();
+    const [foods,setFoods] = React.useState<IFood[]>();
     const [orderIdData,setOrderIdData] = React.useState<number | undefined>(0);
     React.useEffect(()=>{
         getCategoriesData();
@@ -32,11 +35,13 @@ export const Menu: React.FC<IMenuProps> = ({orderId,getOrderData}) => {
     else {
         if (isFoodsOpen) {
             content = (
-                    foodsData?.map(({id,name,price,file})=>(
+                    foodsData.data?.foods.map(({id,name,price,file,amount})=>(
                         <div style={{backgroundImage: `url(${file})`}} key={id} className="menu-item">
-                            <button className="food-item" onClick={() => addToOrder(id)}>
-                                {name}
-                            </button>
+                            {amount <= 0 ?<button className="food-item cursor-not-allowed" >
+                                {name}:{amount}
+                            </button>:<button className="food-item"  onClick={() => addToOrder(id,amount)}>
+                                {name}:{amount}
+                            </button>}
                         </div>
                     ))
             )
@@ -45,24 +50,32 @@ export const Menu: React.FC<IMenuProps> = ({orderId,getOrderData}) => {
             content = (
                     categoriesData.data?.categories.map(({id,name,foods})=>(
                         <div  key={id} className="menu-item">
-                            <button onClick={()=>handleShowFoods(foods,name)} className="category-item">{name}</button>
+                            <button onClick={()=>handleShowFoods(id,foods,name)} className="category-item">{name}</button>
                         </div>
                     ))
             )
         }
         
     }
-    const handleShowFoods = React.useCallback((foods:IFood[],name:string)=>{
+    const handleShowFoods = React.useCallback((id:number,foods:IFood[],name:string)=>{
+        getFoodsData({categoryId : id});
+        categoryId = id;
+        setselectedCategoryId(id);
         setFoodsOpen(true);
-        setFoodsData(foods);
+        setFoods(foods);
         setselectedCategory(name);
     },[]);
     const toggleFoods = React.useCallback(()=>{
         setFoodsOpen(false);
     },[])
-    const addToOrder = React.useCallback((id:number)=>{
-        getOrderData();
-        axios.put(`https://localhost:44355/api/orders/${orderId}`, {foodId:id})
+    const addToOrder = React.useCallback((id:number,amount:number)=>{
+        if (amount!==0) {
+            axios.put(`https://localhost:44355/api/orders/${orderId}`, {foodId:id}).then(()=>{
+                getFoodsData({categoryId: categoryId});
+                getOrderData();
+            })
+            
+        }
     },[])
 
     return (

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Auth from '../../Auth';
 import { APP_ROUTES } from '../../consts';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { IAsyncData, IStaff } from '../../models';
@@ -38,8 +39,11 @@ export const Home : React.FC =()=>{
         if(pin>=1000&&pin<=9999){
             let path = APP_ROUTES.HALLS.PATH;
             axios.get(`https://localhost:44355/api/staffs/${pin}`).then(({data})=>{
-                localStorage.setItem("staff",JSON.stringify(data));
-                navigate(path);
+                Auth.login(()=>{
+                    localStorage.setItem("staff",JSON.stringify(data));
+                    navigate(path);
+                })
+                
             })
             setPin(0)
         } 

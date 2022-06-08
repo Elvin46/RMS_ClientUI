@@ -31,15 +31,21 @@ export interface IFood{
     name:string,
     price:number,
     file:string,
-    count:number
+    count:number,
+    amount:number
 }
 export interface ICategory{
-    id:string
+    id:number
     name:string
     foods:IFood[]
 }
 export interface ICategoryList{
     categories: ICategory[];
+    count: number;
+    getData: void;
+}
+export interface IFoodList{
+    foods: IFood[];
     count: number;
     getData: void;
 }
